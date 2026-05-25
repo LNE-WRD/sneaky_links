@@ -11,3 +11,4 @@ folium
 networkx
 matplotlib
 seaborn
+pyvis
