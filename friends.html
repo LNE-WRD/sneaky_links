@@ -1,0 +1,155 @@
+<html>
+    <head><meta charset="utf-8">
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#d1e19e", "id": 0, "label": "Nour", "lieu": "Lyon", "milieu": ["famille"], "name": "Nour", "shape": "dot", "size": 13, "statut": "bestie"}, {"color": "#e9df65", "id": 1, "label": "Leopold", "lieu": "Lyon", "milieu": ["famille", "Nour"], "name": "Leopold", "shape": "dot", "size": 13, "statut": "poto s\u00fbr"}, {"color": "#ff9ffa", "id": 999, "label": "Souad", "lieu": "None", "milieu": [""], "name": "Souad", "shape": "dot", "size": 82, "statut": "MAIN CHARACTER"}, {"color": "#d1e19e", "id": 2, "label": "Arwen", "lieu": "Rennes", "milieu": ["coll\u00e8ge", "Shreckouilles"], "name": "Arwen", "shape": "dot", "size": 20, "statut": "bestie"}, {"color": "#d1e19e", "id": 3, "label": "Enora", "lieu": "Paris", "milieu": ["coll\u00e8ge", "Shreckouilles"], "name": "Enora", "shape": "dot", "size": 24, "statut": "bestie"}, {"color": "#d1e19e", "id": 5, "label": "Mathilde", "lieu": "Brest", "milieu": ["lyc\u00e9e Breq"], "name": "Mathilde", "shape": "dot", "size": 20, "statut": "bestie"}, {"color": "#d1e19e", "id": 4, "label": "Lila", "lieu": "Lorient", "milieu": ["lyc\u00e9e Breq", "Shreckouilles"], "name": "Lila", "shape": "dot", "size": 23, "statut": "bestie"}, {"color": "#ecbd35", "id": 8, "label": "Tessa", "lieu": "Lille", "milieu": ["\u00e9cole maternelle"], "name": "Tessa", "shape": "dot", "size": 17, "statut": "bestie d\u0027enfance"}, {"color": "#f7d79b", "id": 10, "label": "Cl\u00e9mence", "lieu": "Valencienne", "milieu": ["lyc\u00e9e Breq"], "name": "Cl\u00e9mence", "shape": "dot", "size": 17, "statut": "ami \u00e9loign\u00e9"}, {"color": "#e9df65", "id": 6, "label": "Aziliz", "lieu": "Rennes", "milieu": ["lyc\u00e9e Breq"], "name": "Aziliz", "shape": "dot", "size": 20, "statut": "poto s\u00fbr"}, {"color": "#e9df65", "id": 7, "label": "Maxence", "lieu": "Nantes", "milieu": ["lyc\u00e9e Breq"], "name": "Maxence", "shape": "dot", "size": 20, "statut": "poto s\u00fbr"}, {"color": "#d77e73", "id": 25, "label": "Marilou", "lieu": "Rennes", "milieu": ["Arwen"], "name": "Marilou", "shape": "dot", "size": 14, "statut": "ami d\u0027ami"}, {"color": "#d77e73", "id": 26, "label": "Ma\u00efa", "lieu": "Rennes", "milieu": ["Arwen"], "name": "Ma\u00efa", "shape": "dot", "size": 14, "statut": "ami d\u0027ami"}, {"color": "#e9df65", "id": 21, "label": "Elisa", "lieu": "Rennes", "milieu": ["coll\u00e8ge"], "name": "Elisa", "shape": "dot", "size": 15, "statut": "poto s\u00fbr"}, {"color": "#f7d79b", "id": 19, "label": "L\u00e9a Beno\u00eet", "lieu": "Dijon", "milieu": ["coll\u00e8ge"], "name": "L\u00e9a Beno\u00eet", "shape": "dot", "size": 13, "statut": "ami \u00e9loign\u00e9"}, {"color": "#f7d79b", "id": 11, "label": "Lilo\u00e9", "lieu": "Espagne", "milieu": ["lyc\u00e9e Breq", "Mtp"], "name": "Lilo\u00e9", "shape": "dot", "size": 18, "statut": "ami \u00e9loign\u00e9"}, {"color": "#ecbd35", "id": 9, "label": "Chlo\u00e9", "lieu": "Paris", "milieu": ["\u00e9cole primaire"], "name": "Chlo\u00e9", "shape": "dot", "size": 17, "statut": "bestie d\u0027enfance"}, {"color": "#d1e19e", "id": 14, "label": "Ma\u00efssane", "lieu": "Annecy", "milieu": ["Chat\u00f4"], "name": "Ma\u00efssane", "shape": "dot", "size": 26, "statut": "bestie"}, {"color": "#f7d79b", "id": 12, "label": "Az\u00e9lie", "lieu": "Angers/Bruz", "milieu": ["Chat\u00f4"], "name": "Az\u00e9lie", "shape": "dot", "size": 20, "statut": "ami \u00e9loign\u00e9"}, {"color": "#e9df65", "id": 15, "label": "Garance", "lieu": "Lille", "milieu": ["Chat\u00f4"], "name": "Garance", "shape": "dot", "size": 25, "statut": "poto s\u00fbr"}, {"color": "#e9df65", "id": 16, "label": "Louanne", "lieu": "Rennes", "milieu": ["Chat\u00f4"], "name": "Louanne", "shape": "dot", "size": 19, "statut": "poto s\u00fbr"}, {"color": "#f7d79b", "id": 24, "label": "Klervie", "lieu": "Rennes", "milieu": ["Chat\u00f4"], "name": "Klervie", "shape": "dot", "size": 21, "statut": "ami \u00e9loign\u00e9"}, {"color": "#f6d3cf", "id": 29, "label": "Clara", "lieu": "Rennes", "milieu": ["Chat\u00f4"], "name": "Clara", "shape": "dot", "size": 21, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 30, "label": "Juliette", "lieu": "Rennes", "milieu": ["Chat\u00f4"], "name": "Juliette", "shape": "dot", "size": 21, "statut": "connaissance"}, {"color": "#d1e19e", "id": 13, "label": "Elise", "lieu": "Berlin/Paris", "milieu": ["Chat\u00f4"], "name": "Elise", "shape": "dot", "size": 22, "statut": "bestie"}, {"color": "#f7d79b", "id": 22, "label": "Elouan", "lieu": "Paris", "milieu": ["Chat\u00f4"], "name": "Elouan", "shape": "dot", "size": 14, "statut": "ami \u00e9loign\u00e9"}, {"color": "#d77e73", "id": 33, "label": "Solenn", "lieu": "Paris", "milieu": ["Elise"], "name": "Solenn", "shape": "dot", "size": 13, "statut": "ami d\u0027ami"}, {"color": "#e7bf22", "id": 23, "label": "Loic", "lieu": "Rennes", "milieu": ["Chat\u00f4"], "name": "Loic", "shape": "dot", "size": 13, "statut": "ami"}, {"color": "#f6d3cf", "id": 35, "label": "Manon Thom\u00e9 ", "lieu": "None", "milieu": ["Chat\u00f4", "SNSM"], "name": "Manon Thom\u00e9 ", "shape": "dot", "size": 13, "statut": "connaissance"}, {"color": "#e7bf22", "id": 39, "label": "Joakym", "lieu": "Montpellier", "milieu": ["Mtp", "SNSM"], "name": "Joakym", "shape": "dot", "size": 12, "statut": "ami"}, {"color": "#f6d3cf", "id": 17, "label": "Billie", "lieu": "None", "milieu": ["Chat\u00f4"], "name": "Billie", "shape": "dot", "size": 13, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 18, "label": "Malo\u00e9", "lieu": "Paris", "milieu": ["Chat\u00f4"], "name": "Malo\u00e9", "shape": "dot", "size": 13, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 20, "label": "Lise", "lieu": "None", "milieu": ["coll\u00e8ge"], "name": "Lise", "shape": "dot", "size": 11, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 71, "label": "L\u00e9a", "lieu": "Gen\u00e8ve ", "milieu": ["Cologne"], "name": "L\u00e9a", "shape": "dot", "size": 14, "statut": "connaissance"}, {"color": "#d1e19e", "id": 27, "label": "Iris", "lieu": "Paris Villejuif", "milieu": ["famille"], "name": "Iris", "shape": "dot", "size": 11, "statut": "bestie"}, {"color": "#f6d3cf", "id": 28, "label": "Morgane", "lieu": "None", "milieu": ["Chat\u00f4"], "name": "Morgane", "shape": "dot", "size": 11, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 31, "label": "Youmna", "lieu": "None", "milieu": ["Chat\u00f4"], "name": "Youmna", "shape": "dot", "size": 12, "statut": "connaissance"}, {"color": "#f7d79b", "id": 32, "label": "No\u00e9mie Jousset", "lieu": "Pont-R\u00e9an", "milieu": ["famille"], "name": "No\u00e9mie Jousset", "shape": "dot", "size": 11, "statut": "ami \u00e9loign\u00e9"}, {"color": "#e7bf22", "id": 34, "label": "Carla", "lieu": "Aschaffenburg/K\u00f6ln", "milieu": ["correspondante"], "name": "Carla", "shape": "dot", "size": 11, "statut": "ami"}, {"color": "#f6d3cf", "id": 36, "label": "No\u00e9lie", "lieu": "None", "milieu": ["Chat\u00f4", "badminton"], "name": "No\u00e9lie", "shape": "dot", "size": 11, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 37, "label": "No\u00e9mie ", "lieu": "None", "milieu": ["Saison Saint Lunaire"], "name": "No\u00e9mie ", "shape": "dot", "size": 11, "statut": "connaissance"}, {"color": "#1d3ecf", "id": 38, "label": "Ta\u00efda", "lieu": "Paris", "milieu": ["Mtp", "voisine"], "name": "Ta\u00efda", "shape": "dot", "size": 11, "statut": "crush"}, {"color": "#e7bf22", "id": 40, "label": "L\u00e9a ", "lieu": "Montpellier", "milieu": ["Mtp", "Volley"], "name": "L\u00e9a ", "shape": "dot", "size": 11, "statut": "ami"}, {"color": "#b72818", "id": 41, "label": "Nino", "lieu": "Montpellier", "milieu": ["Mtp"], "name": "Nino", "shape": "dot", "size": 15, "statut": "ex"}, {"color": "#e7bf22", "id": 42, "label": "Louise", "lieu": "Montpellier", "milieu": ["Nino"], "name": "Louise", "shape": "dot", "size": 13, "statut": "ami"}, {"color": "#e9df65", "id": 43, "label": "Assana", "lieu": "Montpellier", "milieu": ["Nino"], "name": "Assana", "shape": "dot", "size": 13, "statut": "poto s\u00fbr"}, {"color": "#e7bf22", "id": 44, "label": "Manon ", "lieu": "Montpellier", "milieu": ["Staps"], "name": "Manon ", "shape": "dot", "size": 11, "statut": "ami"}, {"color": "#f7d79b", "id": 45, "label": "Faustine", "lieu": "Perpignan", "milieu": ["Staps"], "name": "Faustine", "shape": "dot", "size": 11, "statut": "ami \u00e9loign\u00e9"}, {"color": "#e7bf22", "id": 46, "label": "Tha\u00efs ", "lieu": "Perpignan", "milieu": ["Staps"], "name": "Tha\u00efs ", "shape": "dot", "size": 11, "statut": "ami"}, {"color": "#e7bf22", "id": 47, "label": "Alma ", "lieu": "Montpellier", "milieu": ["Staps"], "name": "Alma ", "shape": "dot", "size": 14, "statut": "ami"}, {"color": "#e7bf22", "id": 52, "label": "Manon", "lieu": "Rouen", "milieu": ["SNSM GDR"], "name": "Manon", "shape": "dot", "size": 14, "statut": "ami"}, {"color": "#e7bf22", "id": 48, "label": "Flora", "lieu": "Montpellier/ Chamb\u00e9ry", "milieu": ["Staps"], "name": "Flora", "shape": "dot", "size": 15, "statut": "ami"}, {"color": "#e7bf22", "id": 49, "label": "Audrey", "lieu": "Montpellier", "milieu": ["Staps"], "name": "Audrey", "shape": "dot", "size": 15, "statut": "ami"}, {"color": "#e9df65", "id": 50, "label": "O\u0027Brian", "lieu": " Tenerife", "milieu": ["Staps"], "name": "O\u0027Brian", "shape": "dot", "size": 12, "statut": "poto s\u00fbr"}, {"color": "#e9df65", "id": 51, "label": "Sarah", "lieu": "Montpellier", "milieu": ["Staps"], "name": "Sarah", "shape": "dot", "size": 12, "statut": "poto s\u00fbr"}, {"color": "#e7bf22", "id": 53, "label": "Emma", "lieu": "Montpellier/Al\u00e8s", "milieu": ["SNSM GDR"], "name": "Emma", "shape": "dot", "size": 11, "statut": "ami"}, {"color": "#e9df65", "id": 54, "label": "Kelly", "lieu": "Livadia Gr\u00e8ce", "milieu": ["Spoho"], "name": "Kelly", "shape": "dot", "size": 17, "statut": "poto s\u00fbr"}, {"color": "#f6d3cf", "id": 55, "label": "Penthisilea", "lieu": "Ath\u00e8nes Gr\u00e8ce ", "milieu": ["Spoho"], "name": "Penthisilea", "shape": "dot", "size": 13, "statut": "connaissance"}, {"color": "#e7bf22", "id": 65, "label": "Alberto", "lieu": "Grenade Espagne", "milieu": ["Cologne"], "name": "Alberto", "shape": "dot", "size": 19, "statut": "ami"}, {"color": "#e7bf22", "id": 66, "label": "Laura", "lieu": "Grenade Espagne", "milieu": ["Cologne"], "name": "Laura", "shape": "dot", "size": 19, "statut": "ami"}, {"color": "#e7bf22", "id": 56, "label": "Melvin ", "lieu": "Nantes", "milieu": ["Cologne"], "name": "Melvin ", "shape": "dot", "size": 13, "statut": "ami"}, {"color": "#e9df65", "id": 61, "label": "Yosr", "lieu": "Tunisie/Cologne ", "milieu": ["Cologne"], "name": "Yosr", "shape": "dot", "size": 12, "statut": "poto s\u00fbr"}, {"color": "#e7bf22", "id": 58, "label": "Sasha", "lieu": "Toulouse", "milieu": ["Cologne"], "name": "Sasha", "shape": "dot", "size": 12, "statut": "ami"}, {"color": "#f6d3cf", "id": 57, "label": "Helena ", "lieu": "Cologne", "milieu": ["Spoho"], "name": "Helena ", "shape": "dot", "size": 11, "statut": "connaissance"}, {"color": "#1d3ecf", "id": 59, "label": "Nick", "lieu": "Cologne", "milieu": ["Spoho"], "name": "Nick", "shape": "dot", "size": 13, "statut": "crush"}, {"color": "#1d3ecf", "id": 62, "label": "David", "lieu": "Cologne", "milieu": ["Spoho"], "name": "David", "shape": "dot", "size": 13, "statut": "crush"}, {"color": "#e7bf22", "id": 60, "label": "Sophie ", "lieu": "Marseille", "milieu": ["Cologne"], "name": "Sophie ", "shape": "dot", "size": 11, "statut": "ami"}, {"color": "#1d3ecf", "id": 63, "label": "Flor", "lieu": "Coimbra Portugual", "milieu": ["Cologne"], "name": "Flor", "shape": "dot", "size": 12, "statut": "crush"}, {"color": "#f6d3cf", "id": 64, "label": "Rodion ", "lieu": "Pologne", "milieu": ["Cologne"], "name": "Rodion ", "shape": "dot", "size": 12, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 67, "label": "Martha", "lieu": "Barcelone", "milieu": ["Cologne"], "name": "Martha", "shape": "dot", "size": 17, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 68, "label": "Nora", "lieu": "Barcelone", "milieu": ["Cologne"], "name": "Nora", "shape": "dot", "size": 17, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 69, "label": "Agathe", "lieu": "None", "milieu": ["Cologne"], "name": "Agathe", "shape": "dot", "size": 13, "statut": "connaissance"}, {"color": "#f6d3cf", "id": 70, "label": "L\u00e9a ", "lieu": "None", "milieu": ["Cologne"], "name": "L\u00e9a ", "shape": "dot", "size": 12, "statut": "connaissance"}]);
+                  edges = new vis.DataSet([{"from": 0, "to": 1, "width": 1}, {"from": 0, "to": 999, "width": 1}, {"from": 1, "to": 999, "width": 1}, {"from": 2, "to": 3, "width": 1}, {"from": 2, "to": 5, "width": 1}, {"from": 2, "to": 4, "width": 1}, {"from": 2, "to": 8, "width": 1}, {"from": 2, "to": 10, "width": 1}, {"from": 2, "to": 6, "width": 1}, {"from": 2, "to": 7, "width": 1}, {"from": 2, "to": 25, "width": 1}, {"from": 2, "to": 26, "width": 1}, {"from": 2, "to": 999, "width": 1}, {"from": 3, "to": 3, "width": 1}, {"from": 3, "to": 5, "width": 1}, {"from": 3, "to": 21, "width": 1}, {"from": 3, "to": 6, "width": 1}, {"from": 3, "to": 7, "width": 1}, {"from": 3, "to": 4, "width": 1}, {"from": 3, "to": 19, "width": 1}, {"from": 3, "to": 999, "width": 1}, {"from": 4, "to": 5, "width": 1}, {"from": 4, "to": 6, "width": 1}, {"from": 4, "to": 11, "width": 1}, {"from": 4, "to": 7, "width": 1}, {"from": 4, "to": 9, "width": 1}, {"from": 4, "to": 10, "width": 1}, {"from": 4, "to": 999, "width": 1}, {"from": 5, "to": 6, "width": 1}, {"from": 5, "to": 7, "width": 1}, {"from": 5, "to": 999, "width": 1}, {"from": 6, "to": 7, "width": 1}, {"from": 6, "to": 999, "width": 1}, {"from": 7, "to": 999, "width": 1}, {"from": 8, "to": 11, "width": 1}, {"from": 8, "to": 9, "width": 1}, {"from": 8, "to": 10, "width": 1}, {"from": 8, "to": 999, "width": 1}, {"from": 9, "to": 11, "width": 1}, {"from": 9, "to": 10, "width": 1}, {"from": 9, "to": 999, "width": 1}, {"from": 10, "to": 11, "width": 1}, {"from": 10, "to": 999, "width": 1}, {"from": 11, "to": 14, "width": 1}, {"from": 11, "to": 999, "width": 1}, {"from": 12, "to": 14, "width": 1}, {"from": 12, "to": 15, "width": 1}, {"from": 12, "to": 16, "width": 1}, {"from": 12, "to": 24, "width": 1}, {"from": 12, "to": 29, "width": 1}, {"from": 12, "to": 30, "width": 1}, {"from": 12, "to": 999, "width": 1}, {"from": 13, "to": 14, "width": 1}, {"from": 13, "to": 15, "width": 1}, {"from": 13, "to": 22, "width": 1}, {"from": 13, "to": 33, "width": 1}, {"from": 13, "to": 16, "width": 1}, {"from": 13, "to": 23, "width": 1}, {"from": 13, "to": 24, "width": 1}, {"from": 13, "to": 999, "width": 1}, {"from": 14, "to": 15, "width": 1}, {"from": 14, "to": 29, "width": 1}, {"from": 14, "to": 30, "width": 1}, {"from": 14, "to": 24, "width": 1}, {"from": 14, "to": 16, "width": 1}, {"from": 14, "to": 35, "width": 1}, {"from": 14, "to": 39, "width": 1}, {"from": 14, "to": 999, "width": 1}, {"from": 15, "to": 29, "width": 1}, {"from": 15, "to": 30, "width": 1}, {"from": 15, "to": 24, "width": 1}, {"from": 15, "to": 16, "width": 1}, {"from": 15, "to": 35, "width": 1}, {"from": 15, "to": 999, "width": 1}, {"from": 16, "to": 29, "width": 1}, {"from": 16, "to": 30, "width": 1}, {"from": 16, "to": 24, "width": 1}, {"from": 16, "to": 999, "width": 1}, {"from": 17, "to": 18, "width": 1}, {"from": 17, "to": 999, "width": 1}, {"from": 18, "to": 999, "width": 1}, {"from": 19, "to": 21, "width": 1}, {"from": 19, "to": 999, "width": 1}, {"from": 20, "to": 999, "width": 1}, {"from": 21, "to": 71, "width": 1}, {"from": 21, "to": 999, "width": 1}, {"from": 22, "to": 23, "width": 1}, {"from": 22, "to": 999, "width": 1}, {"from": 23, "to": 999, "width": 1}, {"from": 24, "to": 29, "width": 1}, {"from": 24, "to": 30, "width": 1}, {"from": 24, "to": 999, "width": 1}, {"from": 25, "to": 26, "width": 1}, {"from": 25, "to": 999, "width": 1}, {"from": 26, "to": 999, "width": 1}, {"from": 27, "to": 999, "width": 1}, {"from": 28, "to": 999, "width": 1}, {"from": 29, "to": 30, "width": 1}, {"from": 29, "to": 999, "width": 1}, {"from": 30, "to": 999, "width": 1}, {"from": 31, "to": 71, "width": 1}, {"from": 31, "to": 999, "width": 1}, {"from": 32, "to": 999, "width": 1}, {"from": 33, "to": 999, "width": 1}, {"from": 34, "to": 999, "width": 1}, {"from": 35, "to": 999, "width": 1}, {"from": 36, "to": 999, "width": 1}, {"from": 37, "to": 999, "width": 1}, {"from": 38, "to": 999, "width": 1}, {"from": 39, "to": 999, "width": 1}, {"from": 40, "to": 999, "width": 1}, {"from": 41, "to": 42, "width": 1}, {"from": 41, "to": 43, "width": 1}, {"from": 41, "to": 999, "width": 1}, {"from": 42, "to": 999, "width": 1}, {"from": 43, "to": 999, "width": 1}, {"from": 44, "to": 999, "width": 1}, {"from": 45, "to": 999, "width": 1}, {"from": 46, "to": 999, "width": 1}, {"from": 47, "to": 52, "width": 1}, {"from": 47, "to": 48, "width": 1}, {"from": 47, "to": 49, "width": 1}, {"from": 47, "to": 999, "width": 1}, {"from": 48, "to": 52, "width": 1}, {"from": 48, "to": 49, "width": 1}, {"from": 48, "to": 999, "width": 1}, {"from": 49, "to": 52, "width": 1}, {"from": 49, "to": 999, "width": 1}, {"from": 50, "to": 51, "width": 1}, {"from": 50, "to": 999, "width": 1}, {"from": 51, "to": 999, "width": 1}, {"from": 52, "to": 999, "width": 1}, {"from": 53, "to": 999, "width": 1}, {"from": 54, "to": 55, "width": 1}, {"from": 54, "to": 65, "width": 1}, {"from": 54, "to": 66, "width": 1}, {"from": 54, "to": 999, "width": 1}, {"from": 55, "to": 999, "width": 1}, {"from": 56, "to": 61, "width": 1}, {"from": 56, "to": 58, "width": 1}, {"from": 56, "to": 999, "width": 1}, {"from": 57, "to": 999, "width": 1}, {"from": 58, "to": 999, "width": 1}, {"from": 59, "to": 62, "width": 1}, {"from": 59, "to": 999, "width": 1}, {"from": 60, "to": 999, "width": 1}, {"from": 61, "to": 999, "width": 1}, {"from": 62, "to": 999, "width": 1}, {"from": 63, "to": 64, "width": 1}, {"from": 63, "to": 999, "width": 1}, {"from": 64, "to": 999, "width": 1}, {"from": 65, "to": 66, "width": 1}, {"from": 65, "to": 67, "width": 1}, {"from": 65, "to": 68, "width": 1}, {"from": 65, "to": 999, "width": 1}, {"from": 66, "to": 67, "width": 1}, {"from": 66, "to": 68, "width": 1}, {"from": 66, "to": 999, "width": 1}, {"from": 67, "to": 68, "width": 1}, {"from": 67, "to": 999, "width": 1}, {"from": 68, "to": 999, "width": 1}, {"from": 69, "to": 71, "width": 1}, {"from": 69, "to": 70, "width": 1}, {"from": 69, "to": 999, "width": 1}, {"from": 70, "to": 999, "width": 1}, {"from": 71, "to": 999, "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

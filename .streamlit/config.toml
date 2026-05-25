@@ -1,0 +1,9 @@
+[theme]
+base = "light"
+primaryColor = "#D60400"           # Bleu Interface Transport (du logo)
+backgroundColor = "#ffe3df"         # Blanc pur
+secondaryBackgroundColor = "#ff8787"               # Noir (comme "Transport" dans le logo)
+font = "sans serif"
+
+[theme.sidebar]
+showWidgetBorder=true
