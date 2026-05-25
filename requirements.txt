@@ -9,3 +9,5 @@ altair
 scikit-learn
 folium
 networkx
+matplotlib
+seaborn
