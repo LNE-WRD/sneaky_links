@@ -1,0 +1,11 @@
+streamlit
+geopandas
+pandas
+openpyxl
+pydeck
+numpy
+scipy
+altair
+scikit-learn
+folium
+networkx
