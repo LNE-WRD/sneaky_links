@@ -12,3 +12,5 @@ networkx
 matplotlib
 seaborn
 pyvis
+geopy
+shapely
